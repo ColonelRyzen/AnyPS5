@@ -2009,7 +2009,9 @@ int APS5_VABI scePthreadMulti(void) {
     return error == 0 ? 0 : SceKernelError(error);
 }
 
-int APS5_VABI scePthreadMutexGetprioceiling(void) {
+int APS5_VABI scePthreadMutexGetprioceiling(PthreadMutex* mutex, int32_t* priority) {
+    (void)mutex;
+    (void)priority;
     NotImplemented_nid_no_patch(__func__);
     return 0;
 }
@@ -2018,7 +2020,10 @@ int APS5_VABI scePthreadMutexInitForInternalLibc(PthreadMutex* mutex, const Pthr
     return SceResult(pthread_mutex_init_nid_postfix(mutex, attr));
 }
 
-int APS5_VABI scePthreadMutexSetprioceiling(void) {
+int APS5_VABI scePthreadMutexSetprioceiling(PthreadMutex* mutex, int32_t priority, int32_t* previous) {
+    (void)mutex;
+    (void)priority;
+    (void)previous;
     NotImplemented_nid_no_patch(__func__);
     return 0;
 }
