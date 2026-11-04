@@ -3,7 +3,12 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
+#include <exception>
+#include <utility>
 #include <stdexcept>
+
+struct AudiodecCtrl;
+struct AudiodecCpuMemory;
 
 extern "C" {
 int APS5_VABI sceCustomMusicAudiodecClearContext(int32_t handle);
@@ -21,6 +26,20 @@ int APS5_VABI sceKernelOpen(const char* path, int flags, std::uint16_t mode);
 int APS5_VABI sceKernelGettimeofday(KernelTimeval* tp);
 int APS5_VABI sceNetPoolCreate(const char* name, int size, int flags);
 int APS5_VABI scePthreadMutexLock(PthreadMutex* mutex);
+int APS5_VABI sceCustomMusicNetInetNtop(int af, const void* src, char* dst, uint32_t size);
+int APS5_VABI sceCustomMusicNetShutdown(int s, int how);
+int APS5_VABI sceCustomMusicNetSocketAbort(int s, int flags);
+int APS5_VABI sceCustomMusicAudiodecDeleteDecoder(int32_t handle);
+int APS5_VABI sceCustomMusicAudiodecCpuDecode(const AudiodecCtrl* ctrl, const AudiodecCpuMemory* memory, uint32_t type);
+int APS5_VABI sceCustomMusicKernelNanosleep(const KernelTimespec* rq, KernelTimespec* rm);
+int APS5_VABI sceCustomMusicPthreadSetprio(Pthread thread, int prio);
+int APS5_VABI sceNetInetNtop(int af, const void* src, char* dst, uint32_t size);
+int APS5_VABI sceNetShutdown(int s, int how);
+int APS5_VABI sceNetSocketAbort(int s, int flags);
+int32_t APS5_VABI sceAudiodecDeleteDecoder(int32_t handle);
+int32_t APS5_VABI sceAudiodecCpuDecode(const AudiodecCtrl* ctrl, const AudiodecCpuMemory* memory, uint32_t type);
+int APS5_VABI sceKernelNanosleep(const KernelTimespec* rq, KernelTimespec* rm);
+int APS5_VABI scePthreadSetprio(Pthread thread, int prio);
 Pthread APS5_VABI scePthreadSelf();
 void APS5_VABI scePthreadYield();
 int APS5_VABI sceNetCtlInit(void);
@@ -38,6 +57,25 @@ void Require(bool value, unsigned line) {
 
 void RequireEqual(auto wrapper, auto callee, unsigned line) {
     Require(wrapper == callee, line);
+}
+
+template <typename Wrapper, typename Callee, typename... Args>
+void RequireSameOutcome(Wrapper wrapper, Callee callee, unsigned line, Args&&... args) {
+    int wrapper_result = 0;
+    int callee_result = 0;
+    bool wrapper_threw = false;
+    bool callee_threw = false;
+    try {
+        wrapper_result = static_cast<int>(wrapper(std::forward<Args>(args)...));
+    } catch (const std::exception&) {
+        wrapper_threw = true;
+    }
+    try {
+        callee_result = static_cast<int>(callee(std::forward<Args>(args)...));
+    } catch (const std::exception&) {
+        callee_threw = true;
+    }
+    Require(wrapper_threw == callee_threw && (wrapper_threw || wrapper_result == callee_result), line);
 }
 
 }
@@ -73,6 +111,13 @@ int main() {
     scePthreadYield();
     Require(sceCustomMusicNetCtlInit() == sceNetCtlInit(), __LINE__);
     sceCustomMusicNetCtlTerm();
+    RequireSameOutcome(sceCustomMusicNetInetNtop, sceNetInetNtop, __LINE__, 0, nullptr, nullptr, 0);
+    RequireSameOutcome(sceCustomMusicNetShutdown, sceNetShutdown, __LINE__, -1, 0);
+    RequireSameOutcome(sceCustomMusicNetSocketAbort, sceNetSocketAbort, __LINE__, -1, 0);
+    RequireSameOutcome(sceCustomMusicAudiodecDeleteDecoder, sceAudiodecDeleteDecoder, __LINE__, -1);
+    RequireSameOutcome(sceCustomMusicAudiodecCpuDecode, sceAudiodecCpuDecode, __LINE__, nullptr, nullptr, 0);
+    RequireSameOutcome(sceCustomMusicKernelNanosleep, sceKernelNanosleep, __LINE__, nullptr, nullptr);
+    RequireSameOutcome(sceCustomMusicPthreadSetprio, scePthreadSetprio, __LINE__, nullptr, 0);
     Require(sceCustomMusicNetCtlInit() == 0, __LINE__);
     return 0;
 }
