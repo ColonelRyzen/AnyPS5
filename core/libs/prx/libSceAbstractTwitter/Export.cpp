@@ -347,3 +347,226 @@ int APS5_VABI sceAbstractTwitterUnknown_dP_3UFf8BBw_nid_no_patch() {
 APS5_EXPORT("dP+3UFf8BBw", sceAbstractTwitterUnknown_dP_3UFf8BBw_nid_no_patch);
 
 }
+
+extern "C" {
+int APS5_VABI _ZN15AbstractStorage10TwitterAPI11SendContentEPKvl_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("JMPK-1KGVfo", _ZN15AbstractStorage10TwitterAPI11SendContentEPKvl_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage10TwitterAPIC1Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("p73mqupCtos", _ZN15AbstractStorage10TwitterAPIC1Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage10TwitterAPID1Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("gf3h8ObDkuI", _ZN15AbstractStorage10TwitterAPID1Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage13TwitterFolder4OpenENS_8ItemTypeE_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("y1e+omRUMhY", _ZN15AbstractStorage13TwitterFolder4OpenENS_8ItemTypeE_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage13TwitterFolder5CloseEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("EBRKLWTYXy4", _ZN15AbstractStorage13TwitterFolder5CloseEv_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage13TwitterFolder6RemoveEb_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("oPzukphzAys", _ZN15AbstractStorage13TwitterFolder6RemoveEb_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage13TwitterFolderD0Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("Dkk29mw5RF4", _ZN15AbstractStorage13TwitterFolderD0Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage13TwitterFolderD1Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("1rt9PQJV64k", _ZN15AbstractStorage13TwitterFolderD1Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage13TwitterFolderD2Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("ye4sPvqyPfM", _ZN15AbstractStorage13TwitterFolderD2Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent11SetMetadataEPN23sceMetadataReaderWriter8MetadataE_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("4VD0OuFSW04", _ZN15AbstractStorage14TwitterContent11SetMetadataEPN23sceMetadataReaderWriter8MetadataE_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent13ParseMetadataEPN23sceMetadataReaderWriter8MetadataES3__nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("hRba2mQ9fss", _ZN15AbstractStorage14TwitterContent13ParseMetadataEPN23sceMetadataReaderWriter8MetadataES3__nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent4OpenEit_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("BEGvI6L3BqI", _ZN15AbstractStorage14TwitterContent4OpenEit_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent4ReadEPvlPl_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("0soubDsGzXw", _ZN15AbstractStorage14TwitterContent4ReadEPvlPl_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent5CloseEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("Bof69eeNCCw", _ZN15AbstractStorage14TwitterContent5CloseEv_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent5FlushEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("qwFemTBSZnY", _ZN15AbstractStorage14TwitterContent5FlushEv_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent5WriteEPKvlPl_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("2EoYjMBr3xs", _ZN15AbstractStorage14TwitterContent5WriteEPKvlPl_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent6RemoveEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("d2kMlNVjxC8", _ZN15AbstractStorage14TwitterContent6RemoveEv_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent8SeekByteEliPl_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("Mnf5YJkQX7s", _ZN15AbstractStorage14TwitterContent8SeekByteEliPl_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContent8SeekTimeElPl_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("z0b3IxfaSbI", _ZN15AbstractStorage14TwitterContent8SeekTimeElPl_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContentD0Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("ki9Tj7Fyq90", _ZN15AbstractStorage14TwitterContentD0Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContentD1Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("Q2sTPN-hnYw", _ZN15AbstractStorage14TwitterContentD1Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterContentD2Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("MBi5D9Wuwqo", _ZN15AbstractStorage14TwitterContentD2Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterService13SearchStorageEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("NvSKi+AG++g", _ZN15AbstractStorage14TwitterService13SearchStorageEv_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterService4StopEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("o7r+wKZNjw0", _ZN15AbstractStorage14TwitterService4StopEv_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterService5StartEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("TiDaUZArrIc", _ZN15AbstractStorage14TwitterService5StartEv_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterServiceC1Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("YVerJp-GbDc", _ZN15AbstractStorage14TwitterServiceC1Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterServiceC2Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("eEr7LIMuChY", _ZN15AbstractStorage14TwitterServiceC2Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterServiceD0Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("RghnEC6-6KE", _ZN15AbstractStorage14TwitterServiceD0Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterServiceD1Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("4YOnvHQco2w", _ZN15AbstractStorage14TwitterServiceD1Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterServiceD2Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("E+bNjlNe1DU", _ZN15AbstractStorage14TwitterServiceD2Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterStorage14GetStorageSizeEPlS1_S1__nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("b7klmKCsFQk", _ZN15AbstractStorage14TwitterStorage14GetStorageSizeEPlS1_S1__nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterStorageD0Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("5ovK+oroKlY", _ZN15AbstractStorage14TwitterStorageD0Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterStorageD1Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("I7rDjJe4Eok", _ZN15AbstractStorage14TwitterStorageD1Ev_nid_no_patch);
+int APS5_VABI _ZN15AbstractStorage14TwitterStorageD2Ev_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("5KhQZQnPN50", _ZN15AbstractStorage14TwitterStorageD2Ev_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage13TwitterFolder10GetServiceEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("fTfAEGjfLoQ", _ZNK15AbstractStorage13TwitterFolder10GetServiceEv_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage13TwitterFolder13GetCapabilityEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("dwASDRq1150", _ZNK15AbstractStorage13TwitterFolder13GetCapabilityEv_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage13TwitterFolder7GetStatEPNS_4StatE_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("nLOlVSvvxRc", _ZNK15AbstractStorage13TwitterFolder7GetStatEPNS_4StatE_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage14TwitterContent10GetServiceEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("4d9S8jMy6Ac", _ZNK15AbstractStorage14TwitterContent10GetServiceEv_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage14TwitterContent13GetCapabilityEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("MljG2BSqkMY", _ZNK15AbstractStorage14TwitterContent13GetCapabilityEv_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage14TwitterContent7GetStatEPNS_4StatE_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("Jzj9ZTh5m1I", _ZNK15AbstractStorage14TwitterContent7GetStatEPNS_4StatE_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage14TwitterService14GetServiceTypeEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("M8XjMzOr1aY", _ZNK15AbstractStorage14TwitterService14GetServiceTypeEv_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage14TwitterStorage10GetServiceEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("PUV6qvRaqCE", _ZNK15AbstractStorage14TwitterStorage10GetServiceEv_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage14TwitterStorage13GetCapabilityEv_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("wzzIp0t1OzU", _ZNK15AbstractStorage14TwitterStorage13GetCapabilityEv_nid_no_patch);
+int APS5_VABI _ZNK15AbstractStorage14TwitterStorage7GetStatEPNS_4StatE_nid_no_patch(void) {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+APS5_EXPORT("dP+3UFf8BBw", _ZNK15AbstractStorage14TwitterStorage7GetStatEPNS_4StatE_nid_no_patch);
+}
