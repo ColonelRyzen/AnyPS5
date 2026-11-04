@@ -54,6 +54,10 @@ int APS5_VABI scePthreadMutexDestroy(PthreadMutex* mutex);
 int APS5_VABI scePthreadMutexInit(PthreadMutex* mutex, const PthreadMutexattr* attr, const char* name);
 int APS5_VABI scePthreadMutexLock(PthreadMutex* mutex);
 int APS5_VABI scePthreadSetprio(Pthread thread, int prio);
+Pthread APS5_VABI scePthreadSelf();
+void APS5_VABI scePthreadYield();
+int APS5_VABI sceNetCtlInit(void);
+void APS5_VABI sceNetCtlTerm(void);
 }
 
 extern "C" {
@@ -74,8 +78,8 @@ int APS5_VABI sceCustomMusicPthreadAttrGet(Pthread thread, PthreadAttr* attr) {
     return scePthreadAttrGet(thread, attr);
 }
 
-int APS5_VABI sceCustomMusicPthreadSelf() {
-    NotImplemented_nid_no_patch(__func__);
+Pthread APS5_VABI sceCustomMusicPthreadSelf() {
+    return scePthreadSelf();
 }
 
 int APS5_VABI sceCustomMusicSelect() {
@@ -144,11 +148,11 @@ int APS5_VABI sceCustomMusicNetConnect(int s, const void* addr, uint32_t addrlen
 }
 
 int APS5_VABI sceCustomMusicNetCtlInit() {
-    NotImplemented_nid_no_patch(__func__);
+    return sceNetCtlInit();
 }
 
-int APS5_VABI sceCustomMusicNetCtlTerm() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI sceCustomMusicNetCtlTerm() {
+    sceNetCtlTerm();
 }
 
 int APS5_VABI sceCustomMusicNetEpollAbort(int eid, int flags) {
@@ -275,8 +279,8 @@ int APS5_VABI sceCustomMusicPthreadSetprio(Pthread thread, int prio) {
     return scePthreadSetprio(thread, prio);
 }
 
-int APS5_VABI sceCustomMusicPthreadYield() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI sceCustomMusicPthreadYield() {
+    scePthreadYield();
 }
 
 int APS5_VABI libSceCustomMusicSysCallWrapperUnknown__plus_LdekyVYugM_nid_no_patch() {

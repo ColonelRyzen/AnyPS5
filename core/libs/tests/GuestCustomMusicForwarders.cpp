@@ -3,7 +3,6 @@
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
-#include <source_location>
 #include <stdexcept>
 
 extern "C" {
@@ -12,13 +11,20 @@ int APS5_VABI sceCustomMusicFileOpenRead(const char* path, int flags, std::uint1
 int APS5_VABI sceCustomMusicKernelGettimeofday(KernelTimeval* tp);
 int APS5_VABI sceCustomMusicNetPoolCreate(const char* name, int size, int flags);
 int APS5_VABI sceCustomMusicPthreadMutexLock(PthreadMutex* mutex);
-int APS5_VABI sceCustomMusicPthreadSelf();
+Pthread APS5_VABI sceCustomMusicPthreadSelf();
+void APS5_VABI sceCustomMusicPthreadYield();
+int APS5_VABI sceCustomMusicNetCtlInit();
+void APS5_VABI sceCustomMusicNetCtlTerm();
 
 int32_t APS5_VABI sceAudiodecClearContext(int32_t handle);
 int APS5_VABI sceKernelOpen(const char* path, int flags, std::uint16_t mode);
 int APS5_VABI sceKernelGettimeofday(KernelTimeval* tp);
 int APS5_VABI sceNetPoolCreate(const char* name, int size, int flags);
 int APS5_VABI scePthreadMutexLock(PthreadMutex* mutex);
+Pthread APS5_VABI scePthreadSelf();
+void APS5_VABI scePthreadYield();
+int APS5_VABI sceNetCtlInit(void);
+void APS5_VABI sceNetCtlTerm(void);
 }
 
 namespace {
@@ -32,16 +38,6 @@ void Require(bool value, unsigned line) {
 
 void RequireEqual(auto wrapper, auto callee, unsigned line) {
     Require(wrapper == callee, line);
-}
-
-void RequireThrows(auto function, std::source_location location = std::source_location::current()) {
-    try {
-        function();
-    } catch (const std::runtime_error&) {
-        return;
-    }
-    std::fprintf(stderr, "unimplemented forwarder did not throw at line %u\n", location.line());
-    std::abort();
 }
 
 }
@@ -68,6 +64,15 @@ int main() {
         try { scePthreadMutexLock(nullptr); } catch (const std::invalid_argument&) { callee_threw = true; }
         Require(wrapper_threw && callee_threw, __LINE__);
     }
-    RequireThrows([] { return sceCustomMusicPthreadSelf(); });
+    {
+        Pthread wrapper_self = sceCustomMusicPthreadSelf();
+        Pthread callee_self = scePthreadSelf();
+        Require(wrapper_self != nullptr && callee_self != nullptr && wrapper_self == callee_self, __LINE__);
+    }
+    sceCustomMusicPthreadYield();
+    scePthreadYield();
+    Require(sceCustomMusicNetCtlInit() == sceNetCtlInit(), __LINE__);
+    sceCustomMusicNetCtlTerm();
+    Require(sceCustomMusicNetCtlInit() == 0, __LINE__);
     return 0;
 }
