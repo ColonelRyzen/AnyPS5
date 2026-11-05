@@ -77,4 +77,5 @@ int APS5_VABI u_strToLower_nid_postfix();
 int APS5_VABI u_strToUpper_nid_postfix();
 int APS5_VABI u_strcasecmp_nid_postfix();
 int APS5_VABI u_strncasecmp_nid_postfix();
+int APS5_VABI uset_openPattern_nid_postfix();
 }

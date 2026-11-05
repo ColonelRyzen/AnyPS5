@@ -21,6 +21,16 @@ if(BUILD_TESTING)
         set_tests_properties(guest_icu_utf8 PROPERTIES ENVIRONMENT_MODIFICATION
             "PATH=path_list_prepend:$<TARGET_FILE_DIR:libSceIcu>")
     endif()
+    add_test_executable(guest_icu_catalog_identified_tests ${LIBS_INCLUDE_DIR}/tests/GuestIcuCatalogIdentified.cpp)
+    target_include_directories(guest_icu_catalog_identified_tests PRIVATE ${LIBS_INCLUDE_DIR})
+    target_link_libraries(guest_icu_catalog_identified_tests PRIVATE libSceIcu libc)
+    configure_windows_unwind(guest_icu_catalog_identified_tests)
+    add_test(NAME guest_icu_catalog_identified COMMAND guest_icu_catalog_identified_tests)
+    set_tests_properties(guest_icu_catalog_identified PROPERTIES TIMEOUT 20)
+    if(WIN32)
+        set_tests_properties(guest_icu_catalog_identified PROPERTIES ENVIRONMENT_MODIFICATION
+            "PATH=path_list_prepend:$<TARGET_FILE_DIR:libSceIcu>")
+    endif()
 endif()
 
 if(BUILD_TESTING)

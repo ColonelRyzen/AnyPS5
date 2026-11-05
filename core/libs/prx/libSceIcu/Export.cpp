@@ -408,6 +408,10 @@ int APS5_VABI u_strncasecmp_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
+int APS5_VABI uset_openPattern_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
 int APS5_VABI sceIcuUnknown_BsjbIVU27jQ_nid_no_patch() {
     NotImplemented_nid_no_patch(__func__);
 }
