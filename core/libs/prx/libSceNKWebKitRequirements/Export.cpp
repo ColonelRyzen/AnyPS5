@@ -225,6 +225,10 @@ int APS5_VABI sqlite3_bind_parameter_count_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
+int APS5_VABI sqlite3_bind_text_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
 int APS5_VABI sqlite3_bind_text16_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
@@ -234,6 +238,10 @@ int APS5_VABI sqlite3_busy_handler_nid_postfix() {
 }
 
 int APS5_VABI sqlite3_busy_timeout_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
+int APS5_VABI sqlite3_changes_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
@@ -273,7 +281,15 @@ int APS5_VABI sqlite3_column_int64_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
+int APS5_VABI sqlite3_column_name_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
 int APS5_VABI sqlite3_column_name16_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
+int APS5_VABI sqlite3_column_text_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
@@ -289,6 +305,10 @@ int APS5_VABI sqlite3_column_value_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
+int APS5_VABI sqlite3_config_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
 int APS5_VABI sqlite3_create_collation_v2_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
@@ -298,6 +318,10 @@ int APS5_VABI sqlite3_create_function_nid_postfix() {
 }
 
 int APS5_VABI sqlite3_data_count_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
+int APS5_VABI sqlite3_db_release_memory_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
@@ -373,6 +397,10 @@ int APS5_VABI sqlite3_stmt_busy_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
+int APS5_VABI sqlite3_stmt_readonly_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
 int APS5_VABI sqlite3_total_changes_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
@@ -381,7 +409,15 @@ int APS5_VABI sqlite3_user_data_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
+int APS5_VABI sqlite3_value_bytes_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
 int APS5_VABI sqlite3_value_double_nid_postfix() {
+    NotImplemented_nid_no_patch(__func__);
+}
+
+int APS5_VABI sqlite3_value_text_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
