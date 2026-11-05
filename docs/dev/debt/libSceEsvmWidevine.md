@@ -1,0 +1,5 @@
+# libSceEsvmWidevine technical debt
+
+### Additional catalog exports (PS5 13.60 stub-library catalog)
+
+- [libSce catalog exports](../../../core/libs/prx/libSceEsvmWidevine/Export.cpp) - 10 named callable exports from the [PS5 13.60 function stub library catalog](https://github.com/xdCloudy/PS5-13.60-Function-Stub-Library/blob/bfec40deb4c47a17d7603ee2bc79aa6862c0c56b/data/firmware-13.60/libsceesvmwidevine-5deeddc699.jsonl) give as `defined_function_export` with `source_evidence: [firmware_export_table, verified_nid_name_map]`, in a library the repository does not carry. Names and NIDs come from that catalog; the catalog publishes no prototypes and no signature information, so the declarations use the no-parameter unknown-signature convention and the bodies throw through `NotImplemented_nid_no_patch`. Two further catalog exports (`sceEsvmInitializeWidevine`, `sceEsvmRequestMediaKeySystemAccessWidevine`) are already declared in libSceEsvm under their own identifiers and are deliberately not re-declared here. Console behaviour is not measured.
