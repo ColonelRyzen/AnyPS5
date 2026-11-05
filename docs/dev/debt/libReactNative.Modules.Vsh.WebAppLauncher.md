@@ -70,3 +70,7 @@
 | `Unknown` | `vDup+0mWZf8` |
 | `Unknown` | `wR1ucKGDM9Q` |
 | `Unknown` | `xPA-tXzPGpc` |
+
+### Additional catalog exports (PS5 13.60 stub-library catalog)
+
+- [13.60 catalog declarations](../../../core/libs/prx/libReactNative.Modules.Vsh.WebAppLauncher/Export.cpp) - 75 further named callable exports that the [PS5 13.60 function stub library catalog](https://github.com/xdCloudy/PS5-13.60-Function-Stub-Library/blob/bfec40deb4c47a17d7603ee2bc79aa6862c0c56b/data/firmware-13.60/libreactnative-modules-vsh-webapplauncher-46dbce980c.jsonl) gives as `defined_function_export` with `source_evidence: [firmware_export_table, verified_nid_name_map]` and whose names appear nowhere in the repository. Each catalog NID equals the value the repository's own NID algorithm derives from the name, so the declarations join the named group of [InventoryExports.hpp](../../../core/libs/prx/libReactNative.Modules.Vsh.WebAppLauncher/include/InventoryExports.hpp) with no explicit bind. The catalog publishes no prototypes, so each declaration keeps the no-parameter convention and each body throws through `NotImplemented_nid_no_patch`. Console behaviour is not measured; a name match proves nothing about the console prototype.
