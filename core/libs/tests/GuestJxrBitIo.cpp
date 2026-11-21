@@ -492,6 +492,33 @@ void RunZeroBits(Ring& ring) {
             "32-bit store bytes");
 }
 
+const Jxr::BitIo* readOnlyProbeIo = nullptr;
+Jxr::Stream* readOnlyProbeStream = nullptr;
+int readOnlyGetCalls = 0;
+int readOnlyLateCalls = 0;
+
+std::int64_t APS5_VABI ReadOnlyGetPosition(Jxr::Stream* stream, std::size_t* position) {
+    Require(stream == readOnlyProbeStream && position == &readOnlyProbeIo->referenceOffset,
+            "the read-only path passes original addresses to the callback");
+    ++readOnlyGetCalls;
+    return -INT64_C(0x1122334455667788);
+}
+
+std::int64_t APS5_VABI ReadOnlySetPosition(Jxr::Stream* stream, std::size_t position) {
+    static_cast<void>(stream);
+    static_cast<void>(position);
+    ++readOnlyLateCalls;
+    return 0;
+}
+
+std::int64_t APS5_VABI ReadOnlyRead(Jxr::Stream* stream, void* buffer, std::size_t bytes) {
+    static_cast<void>(stream);
+    static_cast<void>(buffer);
+    static_cast<void>(bytes);
+    ++readOnlyLateCalls;
+    return 0;
+}
+
 void RunEdges() {
     for (std::uint32_t qp = 0; qp < 256; ++qp)
         Require(dquantBits_nid_postfix(static_cast<std::uint8_t>(qp)) ==
@@ -576,6 +603,27 @@ void RunEdges() {
     errno = 71;
     RequireInvalidArgument([&] { fillToByte_nid_postfix(const_cast<Jxr::BitIo*>(&readOnlyIo)); }, "read-only io in fillToByte");
     Require(errno == 71, "fillToByte read-only io changed errno");
+    errno = 71;
+    RequireInvalidArgument([&] { attachISRead_nid_postfix(unmappedIo, &okStream, nullptr); }, "unmapped io in attachISRead");
+    Require(errno == 71, "attachISRead unmapped io changed errno");
+    errno = 71;
+    RequireInvalidArgument([&] { attachISRead_nid_postfix(&validIo, unmappedStream, nullptr); }, "unmapped stream in attachISRead");
+    Require(errno == 71, "attachISRead unmapped stream changed errno");
+    Jxr::Stream readOnlyStream{};
+    readOnlyStream.getPosition = &ReadOnlyGetPosition;
+    readOnlyStream.setPosition = &ReadOnlySetPosition;
+    readOnlyStream.read = &ReadOnlyRead;
+    auto* const writableReadOnlyIo = const_cast<Jxr::BitIo*>(&readOnlyIo);
+    std::array<std::byte, sizeof(readOnlyIo)> before;
+    std::memcpy(before.data(), &readOnlyIo, sizeof(readOnlyIo));
+    readOnlyProbeIo = writableReadOnlyIo;
+    readOnlyProbeStream = &readOnlyStream;
+    errno = 71;
+    RequireInvalidArgument([&] { attachISRead_nid_postfix(writableReadOnlyIo, &readOnlyStream, nullptr); }, "read-only io in attachISRead");
+    Require(errno == 71, "attachISRead read-only io changed errno");
+    Require(readOnlyGetCalls == 1, "read-only io in attachISRead still runs get-position");
+    Require(readOnlyLateCalls == 0, "the first failing guarded write stops attachISRead");
+    Require(std::memcmp(before.data(), &readOnlyIo, sizeof(readOnlyIo)) == 0, "read-only io in attachISRead is left unchanged");
 }
 
 } // namespace

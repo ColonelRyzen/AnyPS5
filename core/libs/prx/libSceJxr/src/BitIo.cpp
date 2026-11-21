@@ -76,23 +76,63 @@ extern "C" {
 std::int64_t APS5_VABI attachISRead_nid_postfix(Jxr::BitIo* io, Jxr::Stream* stream, void* codec) {
     static_cast<void>(codec);
     Require(io != nullptr, __func__, "null bit state");
+    Jxr::BitIo guestIo{};
+    const int ioErrno = errno;
+    const bool copiedIo = GuestCopyIn_nid_no_patch(&guestIo, io, sizeof(guestIo));
+    errno = ioErrno;
+    Require(copiedIo, __func__, "unreadable bit state");
     Require(stream != nullptr, __func__, "null stream");
-    Require(stream->getPosition != nullptr, __func__, "null get-position callback");
-    stream->getPosition(stream, &io->referenceOffset);
-    const auto ioAddress = reinterpret_cast<std::uintptr_t>(io);
-    Require(ioAddress >= 8192, __func__, "bit state address underflows the packet buffer");
-    auto* const start = reinterpret_cast<std::uint8_t*>(ioAddress - 8192);
-    io->start = start;
-    io->current = start;
-    Require(stream->setPosition != nullptr, __func__, "null set-position callback");
-    stream->setPosition(stream, io->referenceOffset);
-    Require(stream->read != nullptr, __func__, "null read callback");
-    stream->read(stream, io->start, 8192);
-    io->referenceOffset += 8192;
-    io->accumulator = LoadBigEndian(io->start);
-    io->bitsUsed = 0;
-    io->mask = ~static_cast<std::int32_t>(8192) & ~std::int32_t{1};
-    io->stream = stream;
+    Jxr::Stream guestStream{};
+    const int streamErrno = errno;
+    const bool copiedStream = GuestCopyIn_nid_no_patch(&guestStream, stream, sizeof(guestStream));
+    errno = streamErrno;
+    Require(copiedStream, __func__, "unreadable stream");
+    Require(guestStream.getPosition != nullptr, __func__, "null get-position callback");
+    guestStream.getPosition(stream, &io->referenceOffset);
+    const int positionErrno = errno;
+    const bool rereadPosition = GuestCopyIn_nid_no_patch(&guestIo, io, sizeof(guestIo));
+    errno = positionErrno;
+    Require(rereadPosition, __func__, "unreadable bit state");
+    const auto address = reinterpret_cast<std::uintptr_t>(io);
+    Require(address >= 8192, __func__, "bit state address underflows the packet buffer");
+    guestIo.start = reinterpret_cast<std::uint8_t*>(address - 8192);
+    guestIo.current = guestIo.start;
+    const int writeErrno = errno;
+    const bool wroteSpan = GuestCopyOut_nid_no_patch(
+        &io->accumulator,
+        &guestIo.accumulator,
+        offsetof(Jxr::BitIo, referenceOffset) - offsetof(Jxr::BitIo, accumulator));
+    errno = writeErrno;
+    Require(wroteSpan, __func__, "unwritable bit state");
+    Require(guestStream.setPosition != nullptr, __func__, "null set-position callback");
+    guestStream.setPosition(stream, guestIo.referenceOffset);
+    const int startErrno = errno;
+    const bool rereadStart = GuestCopyIn_nid_no_patch(&guestIo, io, sizeof(guestIo));
+    errno = startErrno;
+    Require(rereadStart, __func__, "unreadable bit state");
+    Require(guestStream.read != nullptr, __func__, "null read callback");
+    guestStream.read(stream, guestIo.start, 8192);
+    const int packetErrno = errno;
+    const bool rereadPacket = GuestCopyIn_nid_no_patch(&guestIo, io, sizeof(guestIo));
+    errno = packetErrno;
+    Require(rereadPacket, __func__, "unreadable bit state");
+    guestIo.referenceOffset += 8192;
+    std::uint8_t packetStart[4]{};
+    const int loadErrno = errno;
+    const bool loadedPacket = GuestCopyIn_nid_no_patch(packetStart, guestIo.start, sizeof(packetStart));
+    errno = loadErrno;
+    Require(loadedPacket, __func__, "unreadable packet");
+    guestIo.accumulator = LoadBigEndian(packetStart);
+    guestIo.bitsUsed = 0;
+    guestIo.mask = ~static_cast<std::int32_t>(8192) & ~std::int32_t{1};
+    guestIo.stream = stream;
+    const int finalErrno = errno;
+    const bool wroteFinal = GuestCopyOut_nid_no_patch(
+        &io->accumulator,
+        &guestIo.accumulator,
+        sizeof(guestIo) - offsetof(Jxr::BitIo, accumulator));
+    errno = finalErrno;
+    Require(wroteFinal, __func__, "unwritable bit state");
     return 0;
 }
 
