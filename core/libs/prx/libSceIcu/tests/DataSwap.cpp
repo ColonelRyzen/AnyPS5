@@ -2,6 +2,9 @@
 #include "prx/libc/include/Api.hpp"
 #include "SceTypes.hpp"
 #include "udataswp.h"
+#include "utrie.h"
+#include "utrie2_impl.h"
+#include "ucptrie_impl.h"
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
@@ -163,6 +166,70 @@ std::vector<std::uint8_t> InverseUca() {
     return bytes;
 }
 
+std::vector<std::uint8_t> Bytes(std::size_t n) {
+    std::vector<std::uint8_t> v(n);
+    for (std::size_t i = 0; i < n; ++i) v[i] = static_cast<std::uint8_t>(i * 7 + 1);
+    return v;
+}
+
+template <typename Field> void At(std::vector<std::uint8_t>& v, std::size_t off, Field value) {
+    std::memcpy(v.data() + off, &value, sizeof(value));
+}
+
+std::vector<std::uint8_t> UcptrieImage() {
+    const std::size_t index = UCPTRIE_SMALL_INDEX_LENGTH;
+    const std::size_t data = 160;
+    auto v = Bytes(16 + index * 2 + data * 2);
+    At<std::uint32_t>(v, 0, UCPTRIE_SIG);
+    At<std::uint16_t>(v, 4, static_cast<std::uint16_t>((UCPTRIE_TYPE_SMALL << 6) | UCPTRIE_VALUE_BITS_16));
+    At<std::uint16_t>(v, 6, static_cast<std::uint16_t>(index));
+    At<std::uint16_t>(v, 8, static_cast<std::uint16_t>(data));
+    At<std::uint16_t>(v, 10, 0xffff);
+    return v;
+}
+
+std::vector<std::uint8_t> Utrie2Image() {
+    const std::size_t index = UTRIE2_INDEX_1_OFFSET;
+    const std::size_t data = UTRIE2_DATA_START_OFFSET;
+    auto v = Bytes(16 + index * 2 + data * 2);
+    At<std::uint32_t>(v, 0, UTRIE2_SIG);
+    At<std::uint16_t>(v, 4, UTRIE2_16_VALUE_BITS);
+    At<std::uint16_t>(v, 6, static_cast<std::uint16_t>(index));
+    At<std::uint16_t>(v, 8, static_cast<std::uint16_t>(data >> 2));
+    return v;
+}
+
+std::vector<std::uint8_t> UtrieImage() {
+    const std::size_t index = UTRIE_BMP_INDEX_LENGTH;
+    const std::size_t data = UTRIE_DATA_BLOCK_LENGTH;
+    auto v = Bytes(16 + index * 2 + data * 2);
+    At<std::uint32_t>(v, 0, 0x54726965u);
+    At<std::uint32_t>(v, 4, (static_cast<std::uint32_t>(UTRIE_INDEX_SHIFT) << 4) | UTRIE_SHIFT);
+    At<std::int32_t>(v, 8, static_cast<std::int32_t>(index));
+    At<std::int32_t>(v, 12, static_cast<std::int32_t>(data));
+    return v;
+}
+
+
+void CheckDispatcher() {
+    const std::vector<std::tuple<std::string, std::vector<std::uint8_t>, std::int32_t, std::uint64_t>> cases = {
+        {"Tri3", UcptrieImage(), 464, 0xdd024deaf11073c7ull},
+        {"Tri2", Utrie2Image(), 4624, 0xc615ff205eb58d25ull},
+        {"Trie", UtrieImage(), 4176, 0x6814b1af7a3487d4ull},
+    };
+    for (const auto& [label, image, size, hash] : cases) {
+        const UDataSwapper* ds = Open(false, true, U_ASCII_FAMILY);
+        std::vector<std::uint8_t> out(image.size() * 2, 0xa5);
+        std::int32_t status = U_ZERO_ERROR;
+        Require(utrie_swapAnyVersion_nid_postfix(ds, image.data(), static_cast<std::int32_t>(image.size()), out.data(), &status) == size,
+            std::string("dispatcher ") + label + " size");
+        Require(status == 0, std::string("dispatcher ") + label + " status");
+        Require(Hash(out.data(), size) == hash, std::string("dispatcher ") + label + " hash");
+        Require(utrie_swapAnyVersion_nid_postfix(Open(false, true, U_ASCII_FAMILY), image.data(), -1, nullptr, &status) == 0 &&
+            status == U_INVALID_FORMAT_ERROR, std::string("dispatcher ") + label + " cannot identify a generation from length alone");
+    }
+}
+
 void Expect(const char* name, SwapFunction swap, const std::vector<std::uint8_t>& data, bool inBig, std::uint8_t outCharset,
     std::int32_t size, std::uint64_t hash) {
     const std::string label = name;
@@ -194,6 +261,7 @@ void ExpectError(const char* name, SwapFunction swap, const UDataSwapper* ds, co
 
 }
 
+
 int main() {
     const std::string c = ANYPS5_ICU_SOURCE_DIR;
     const std::string j = ANYPS5_ICU4J_DIR;
@@ -212,6 +280,9 @@ int main() {
     Expect("ubrk_swap", ubrk_swap_nid_postfix, sentences, true, U_ASCII_FAMILY, 19856, 0x2aa99e351b3ec8dbull);
     Expect("udict_swap", udict_swap_nid_postfix, thai, true, U_ASCII_FAMILY, 126136, 0xed9762d97726425full);
     Expect("ucol_swapInverseUCA", ucol_swapInverseUCA_nid_postfix, InverseUca(), false, U_ASCII_FAMILY, 108, 0x6596453c50400663ull);
+    Expect("ucptrie_swap", ucptrie_swap_nid_postfix, UcptrieImage(), false, U_ASCII_FAMILY, 464, 0xdd024deaf11073c7ull);
+    Expect("utrie2_swap", utrie2_swap_nid_postfix, Utrie2Image(), false, U_ASCII_FAMILY, 4624, 0xc615ff205eb58d25ull);
+    CheckDispatcher();
     auto version4 = nfkc;
     version4[16] = 4;
     Expect("unorm2_swap", unorm2_swap_nid_postfix, version4, false, U_ASCII_FAMILY, 56124, 0xd10e2e66a389b595ull);

@@ -149,6 +149,13 @@ std::int32_t SwapNormalization(const UDataSwapper* ds, const void* inData, std::
     return 0;
 }
 
+U_CAPI int32_t U_EXPORT2 utrie_swapAnyVersion(const UDataSwapper *ds, const void *inData, int32_t length, void *outData,
+    UErrorCode *pErrorCode);
+U_CAPI int32_t U_EXPORT2 utrie2_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *outData,
+    UErrorCode *pErrorCode);
+U_CAPI int32_t U_EXPORT2 ucptrie_swap(const UDataSwapper *ds, const void *inData, int32_t length, void *outData,
+    UErrorCode *pErrorCode);
+
 template<auto Function>
 std::int32_t Run(const UDataSwapper* swapper, const void* inData, std::int32_t length, void* outData, std::int32_t* status) {
     const Session session(swapper);
@@ -198,6 +205,21 @@ std::int32_t APS5_VABI ubrk_swap_nid_postfix(const UDataSwapper* swapper, const 
 std::int32_t APS5_VABI udict_swap_nid_postfix(const UDataSwapper* swapper, const void* inData, std::int32_t length,
     void* outData, std::int32_t* status) {
     return Run<udict_swap>(swapper, inData, length, outData, status);
+}
+
+std::int32_t APS5_VABI utrie_swapAnyVersion_nid_postfix(const UDataSwapper* swapper, const void* inData, std::int32_t length,
+    void* outData, std::int32_t* status) {
+    return Run<utrie_swapAnyVersion>(swapper, inData, length, outData, status);
+}
+
+std::int32_t APS5_VABI utrie2_swap_nid_postfix(const UDataSwapper* swapper, const void* inData, std::int32_t length,
+    void* outData, std::int32_t* status) {
+    return Run<utrie2_swap>(swapper, inData, length, outData, status);
+}
+
+std::int32_t APS5_VABI ucptrie_swap_nid_postfix(const UDataSwapper* swapper, const void* inData, std::int32_t length,
+    void* outData, std::int32_t* status) {
+    return Run<ucptrie_swap>(swapper, inData, length, outData, status);
 }
 
 }

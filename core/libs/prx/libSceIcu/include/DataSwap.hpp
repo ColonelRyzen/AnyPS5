@@ -22,5 +22,11 @@ std::int32_t APS5_VABI ubrk_swap_nid_postfix(const UDataSwapper* swapper, const 
     void* outData, std::int32_t* status);
 std::int32_t APS5_VABI udict_swap_nid_postfix(const UDataSwapper* swapper, const void* inData, std::int32_t length,
     void* outData, std::int32_t* status);
+std::int32_t APS5_VABI utrie_swapAnyVersion_nid_postfix(const UDataSwapper* swapper, const void* inData, std::int32_t length,
+    void* outData, std::int32_t* status);
+std::int32_t APS5_VABI utrie2_swap_nid_postfix(const UDataSwapper* swapper, const void* inData, std::int32_t length,
+    void* outData, std::int32_t* status);
+std::int32_t APS5_VABI ucptrie_swap_nid_postfix(const UDataSwapper* swapper, const void* inData, std::int32_t length,
+    void* outData, std::int32_t* status);
 
 }
