@@ -68,3 +68,14 @@ std::uint32_t* APS5_VABI sceAgcVshUnknown_Aozdh0bCcO0(CommandBuffer* buffer) {
 }
 
 }
+
+extern "C" {
+int APS5_VABI sceAgcGetRegisterDefaultsInternal_0090() {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+int APS5_VABI sceAgcGetRegisterDefaults_0090() {
+    NotImplemented_nid_no_patch(__func__);
+    return 0;
+}
+}
