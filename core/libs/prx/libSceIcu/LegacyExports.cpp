@@ -19,6 +19,17 @@
 #include <string>
 #include <utility>
 
+static constexpr std::size_t MaximumGuestStringLength = 0x10000;
+
+static std::string GuestString(const char* text) {
+    std::string copy;
+    const int savedErrno = errno;
+    const int error = CopyGuestString_nid_no_patch(text, MaximumGuestStringLength, copy);
+    errno = savedErrno;
+    if (error != 0) APS5_INVALID_ARG_EX;
+    return copy;
+}
+
 extern "C" {
 
 static std::atomic<std::int32_t> openStandardNamesStatusForTest{std::numeric_limits<std::int32_t>::min()};
@@ -1428,8 +1439,20 @@ int APS5_VABI sceIcuLegacyUnknown_7sukzrX_minus_FQ4_nid_no_patch() {
 }
 APS5_EXPORT("7sukzrX-FQ4", sceIcuLegacyUnknown_7sukzrX_minus_FQ4_nid_no_patch);
 
-int APS5_VABI ures_getVersion_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI ures_getVersion_nid_postfix(const UResourceBundle* resB, std::uint8_t* versionInfo) {
+    const int savedErrno = errno;
+    if (resB) {
+        UResourceBundle probe{};
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, resB, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+    }
+    {
+        const bool writable = GuestWritable_nid_no_patch(versionInfo, 4);
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    ures_getVersion(resB, versionInfo);
 }
 
 int APS5_VABI uprv_getStaticCurrencyName_nid_postfix() {
@@ -2233,8 +2256,35 @@ int APS5_VABI _ZN6icu_6822UCharCharacterIteratorC1ENS_14ConstChar16PtrEii_nid_po
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI ures_getNextString_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
+const char16_t* APS5_VABI ures_getNextString_nid_postfix(UResourceBundle* resB, std::int32_t* len,
+                                                         const char** key, std::int32_t* status) {
+    const int savedErrno = errno;
+    if (resB) {
+        UResourceBundle probe{};
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, resB, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+    }
+    if (len) {
+        const bool writable = GuestWritable_nid_no_patch(len, sizeof(*len));
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    if (key) {
+        const bool writable = GuestWritable_nid_no_patch(const_cast<const char**>(key), sizeof(*key));
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    if (status) {
+        std::int32_t probe = 0;
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, status, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+        const bool writable = GuestWritable_nid_no_patch(status, sizeof(*status));
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    return ures_getNextString(resB, len, key, reinterpret_cast<UErrorCode*>(status));
 }
 
 int APS5_VABI sceIcuLegacyUnknown_CrWRhCMUKg4_nid_no_patch() {
@@ -2405,8 +2455,30 @@ int APS5_VABI _ZN6icu_6816ReorderingBuffer12appendZeroCCEiR10UErrorCode_nid_post
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI ures_getNextResource_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
+UResourceBundle* APS5_VABI ures_getNextResource_nid_postfix(UResourceBundle* resB, UResourceBundle* fillIn,
+                                                            std::int32_t* status) {
+    const int savedErrno = errno;
+    if (resB) {
+        UResourceBundle probe{};
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, resB, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+    }
+    if (fillIn) {
+        const bool writable = GuestWritable_nid_no_patch(fillIn, sizeof(*fillIn));
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    if (status) {
+        std::int32_t probe = 0;
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, status, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+        const bool writable = GuestWritable_nid_no_patch(status, sizeof(*status));
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    return ures_getNextResource(resB, fillIn, reinterpret_cast<UErrorCode*>(status));
 }
 
 int APS5_VABI _ZNK6icu_6811Normalizer213normalizeUTF8EjNS_11StringPieceERNS_8ByteSinkEPNS_5EditsER10UErrorCode_nid_postfix() {
@@ -2807,8 +2879,15 @@ int APS5_VABI ucnv_getCCSID_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI ures_resetIterator_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI ures_resetIterator_nid_postfix(UResourceBundle* resB) {
+    const int savedErrno = errno;
+    if (resB) {
+        UResourceBundle probe{};
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, resB, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+    }
+    ures_resetIterator(resB);
 }
 
 int APS5_VABI _ZN6icu_6828FilteredBreakIteratorBuilderC2Ev_nid_postfix() {
@@ -3805,8 +3884,28 @@ int APS5_VABI _ZN6icu_6810NormalizerD1Ev_nid_postfix() {
     NotImplemented_nid_no_patch(__func__);
 }
 
-int APS5_VABI ures_getValueWithFallback_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
+void APS5_VABI ures_getValueWithFallback_nid_postfix(const UResourceBundle* bundle, const char* path,
+                                                     UResourceBundle* tempFillIn, void* value,
+                                                     std::int32_t* errorCode) {
+    if (!bundle) APS5_INVALID_ARG_EX;
+    if (!value) APS5_INVALID_ARG_EX;
+    if (!errorCode) APS5_INVALID_ARG_EX;
+    const int savedErrno = errno;
+    if (path) {
+        char probe = 0;
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, path, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+    }
+    if (tempFillIn) {
+        const bool writable = GuestWritable_nid_no_patch(tempFillIn, sizeof(*tempFillIn));
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    const std::string copy = path ? GuestString(path) : std::string{};
+    ures_getValueWithFallback(bundle, path ? copy.c_str() : nullptr, tempFillIn,
+                              *reinterpret_cast<icu::ResourceDataValue*>(value),
+                              *reinterpret_cast<UErrorCode*>(errorCode));
 }
 
 int APS5_VABI _ZN6icu_6816LocaleKeyFactoryC2EiRKNS_13UnicodeStringE_nid_postfix() {
@@ -3831,8 +3930,32 @@ int APS5_VABI sceIcuLegacyUnknown_O4trU_plus_dXByY_nid_no_patch() {
 }
 APS5_EXPORT("O4trU+dXByY", sceIcuLegacyUnknown_O4trU_plus_dXByY_nid_no_patch);
 
-int APS5_VABI ures_getByKeyWithFallback_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
+UResourceBundle* APS5_VABI ures_getByKeyWithFallback_nid_postfix(const UResourceBundle* resB, const char* inKey,
+                                                                  UResourceBundle* fillIn, std::int32_t* status) {
+    if (!inKey) APS5_INVALID_ARG_EX;
+    const int savedErrno = errno;
+    if (resB) {
+        UResourceBundle probe{};
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, resB, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+    }
+    if (fillIn) {
+        const bool writable = GuestWritable_nid_no_patch(fillIn, sizeof(*fillIn));
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    if (status) {
+        std::int32_t probe = 0;
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, status, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+        const bool writable = GuestWritable_nid_no_patch(status, sizeof(*status));
+        errno = savedErrno;
+        if (!writable) APS5_INVALID_ARG_EX;
+    }
+    const std::string copy = GuestString(inKey);
+    return ures_getByKeyWithFallback(resB, copy.c_str(), fillIn, reinterpret_cast<UErrorCode*>(status));
 }
 
 int APS5_VABI sceIcuLegacyUnknown_OCWP8GdBkA0_nid_no_patch() {
@@ -4852,8 +4975,15 @@ int APS5_VABI sceIcuLegacyUnknown_UhSI5QqNY7M_nid_no_patch() {
 }
 APS5_EXPORT("UhSI5QqNY7M", sceIcuLegacyUnknown_UhSI5QqNY7M_nid_no_patch);
 
-int APS5_VABI ures_getVersionNumber_nid_postfix() {
-    NotImplemented_nid_no_patch(__func__);
+const char* APS5_VABI ures_getVersionNumber_nid_postfix(const UResourceBundle* resourceBundle) {
+    const int savedErrno = errno;
+    if (resourceBundle) {
+        UResourceBundle probe{};
+        const bool readable = GuestCopyIn_nid_no_patch(&probe, resourceBundle, sizeof(probe));
+        errno = savedErrno;
+        if (!readable) APS5_INVALID_ARG_EX;
+    }
+    return ures_getVersionNumber(resourceBundle);
 }
 
 int APS5_VABI _ZN6icu_6823StringCharacterIteratorC2Ev_nid_postfix() {
